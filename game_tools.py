@@ -3,10 +3,11 @@
 import csv
 import os
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd 
 import seaborn as sns
-import matplotlib.pyplot as plt
+
 
 # Game settings 
 DICE_COUNT = 3
@@ -84,7 +85,7 @@ def save_game(scores, winner, record_file=RECORD_FILE):
 
 def score_graph(score_history, graph_file=GRAPH_FILE):
     """Create a graph showing how the game score changed."""
-    score_data = pd.DataFrame(history)
+    score_data = pd.DataFrame(score_history)
     
     
     sns.lineplot(data=score_data, x="turn", y="score", hue="player")

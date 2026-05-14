@@ -2,7 +2,7 @@
 
 from game_tools import DEFAULT_WINNING_SCORE
 from game_tools import calculate_score
-from game_tools import create_score_graph
+from game_tools import score_graph
 from game_tools import find_winner
 from game_tools import get_fixed_indexes
 from game_tools import is_tuple_out
@@ -107,7 +107,7 @@ def main():
 
     winner = find_winner(scores)
     save_game(scores, winner)
-    create_score_graph(history)
+    score_graph(history)
 
     print()
     print("=" * 40)
