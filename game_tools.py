@@ -29,7 +29,7 @@ def is_tuple_out(dice):
 
 
 def get_fixed_indexes(dice):
-    """Return the indexes of dice that cannot be rerolled."""
+    """Find which dice are locked in place."""
     fixed_indexes = []
 
     for value in dice:
@@ -43,7 +43,7 @@ def get_fixed_indexes(dice):
 
 
 def reroll_unfixed_dice(dice, fixed_indexes):
-    """Reroll only the dice that are not fixed."""
+    """Reroll the dice that are still in play."""
     new_dice = dice.copy()
 
     for index in range(len(new_dice)):
@@ -54,5 +54,10 @@ def reroll_unfixed_dice(dice, fixed_indexes):
 
 
 def calculate_score(dice):
-    """Return the total points from the current dice."""
+    """Add up the dice for the player's turn score."""
     return sum(dice)
+
+
+def find_winner(scores):
+    """Return the player with the highest score."""
+    return max(scores, key=scores.get)
