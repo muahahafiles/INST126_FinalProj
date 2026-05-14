@@ -1,12 +1,10 @@
 """Tuple Out dice game helper functions."""
 
 import csv
-from pathlib import Path
+import os
 
 import numpy as np
-import pandas as pd
-import seaborn as sns
-from matplotlib import pyplot as plt
+
 
 # Game settings 
 DICE_COUNT = 3
@@ -61,3 +59,22 @@ def calculate_score(dice):
 def find_winner(scores):
     """Return the player with the highest score."""
     return max(scores, key=scores.get)
+
+
+def save_game(scores, winner, record_file=RECORD_FILE):
+    """Save the final scores after a game ends."""
+    file_exists = os.path.exists(record_file)
+
+    with open(record_file, "a", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+
+        if not file_exists:
+            writer.writerow(["player", "score", "winner"])
+
+        for player, score in scores.items():
+            if player == winner:
+                winner_status = "yes"
+            else:
+                winner_status = "no"
+
+            writer.writerow([player, score, winner_status])
