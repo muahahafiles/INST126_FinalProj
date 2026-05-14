@@ -1,0 +1,5 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+game_records.csv
+score_graph.png
