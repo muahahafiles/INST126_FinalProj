@@ -16,42 +16,43 @@ RECORD_FILE = "game_records.csv"
 GRAPH_FILE = "score_graph.png"
 
 #Game tools functions / methods 
-def roll_die() -> int:
-    """Return a single random die roll with numpy."""
-    return int(np.random.randint(1, DIE_SIDES + 1))
+
+def roll_dice(dice_count=DICE_COUNT, die_sides=DIE_SIDES):
+    """Roll the dice and return the results as a list."""
+    rolls = np.random.randint(1, die_sides + 1, size=dice_count)
+    return rolls.tolist()
 
 
-def roll_dice(count: int = DICE_COUNT) -> list[int]:
-    """Return a list of random die rolls using numpy."""
-    rolls = np.random.randint(1, DIE_SIDES + 1, size=count)
-    return [int(roll) for roll in rolls]
-
-
-def is_tuple_out(dice: list[int]) -> bool:
-    """Return True when all dice have the same value."""
+def is_tuple_out(dice):
+    """Return True if all dice have the same value."""
     return len(set(dice)) == 1
 
 
-def fixed_indices(dice: list[int]) -> list[int]:
-    """Return the indexes of dice that are fixed by a matching pair."""
-    fixed = []
+def get_fixed_indexes(dice):
+    """Return the indexes of dice that cannot be rerolled."""
+    fixed_indexes = []
 
-    for index, value in enumerate(dice):
+    for value in dice:
         if dice.count(value) == 2:
-            fixed.append(index)
+            for index, die in enumerate(dice):
+                if die == value:
+                    fixed_indexes.append(index)
+            return fixed_indexes
 
-    return fixed
-
-
-def available_indices(dice: list[int], fixed: list[int]) -> list[int]:
-    """Return the indexes of dice that may still be re-rolled."""
-    available = []
-
-    for index in range(len(dice)):
-        if index not in fixed:
-            available.append(index)
-
-    return available
+    return fixed_indexes
 
 
-    
+def reroll_unfixed_dice(dice, fixed_indexes):
+    """Reroll only the dice that are not fixed."""
+    new_dice = dice.copy()
+
+    for index in range(len(new_dice)):
+        if index not in fixed_indexes:
+            new_dice[index] = roll_dice(1)[0]
+
+    return new_dice
+
+
+def calculate_score(dice):
+    """Return the total points from the current dice."""
+    return sum(dice)
