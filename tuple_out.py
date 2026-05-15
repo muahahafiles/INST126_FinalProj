@@ -11,6 +11,7 @@ from game_tools import reroll_unfixed_dice
 from game_tools import roll_dice
 from game_tools import save_game
 from game_tools import save_high_score
+from game_tools import SOLO_TURNS
 
 
 def choose_mode():
@@ -29,11 +30,10 @@ def choose_mode():
     return mode
 
 
-
 def get_player_names():
-    """Have the player enter their names and return them in a list."""
-    player_one = input("Player 1: Enter your name!: ").strip()
-    player_two = input("Player 2: Enter your name!: ").strip()
+    """Get both multiplayer names."""
+    player_one = input("Player 1: Enter your name: ").strip()
+    player_two = input("Player 2: Enter your name: ").strip()
     
     while player_one == "":
         print("We need your name, Player 1!")
@@ -57,9 +57,8 @@ def get_single_player():
     return player
 
 
-
 def show_scores(scores):
-    """Print the current scores to show players where they stand"""
+    """Print the current scores to show players where they stand."""
     print()
     print("Current scores:")
 
@@ -104,9 +103,8 @@ def play_turn(player_name):
 
 
 def play_multiplayer():
-    """Start the game and control the main game loop."""
+    """Play the multiplayer version of the game."""
     print(f"The first player to reach {DEFAULT_WINNING_SCORE} points wins.")
-  
 
     players = get_player_names()
     scores = {}
@@ -121,19 +119,18 @@ def play_multiplayer():
             show_scores(scores)
             points = play_turn(player)
             scores[player] += points
-            
+
             history.append(
                 {
-                  "turn": turn,
-                  "player": player,
-                  "score": scores[player],  
-            
+                    "turn": turn,
+                    "player": player,
+                    "score": scores[player],
                 }
             )
             turn += 1
-            
+
             if scores[player] >= DEFAULT_WINNING_SCORE:
-                break    
+                break
 
     winner = find_winner(scores)
     save_game(scores, winner)
@@ -141,20 +138,84 @@ def play_multiplayer():
 
     print()
     print("=" * 40)
-    print("\nGame over!")
+    print("Game over!")
     print("=" * 40)
     show_scores(scores)
     print()
-    print(f"\nThe winner is {winner}!")
+    print(f"The winner is {winner}!")
     print("Game results were saved to game_records.csv.")
     print("A score graph can be viewed in score_graph.png.")
-    
+
+
+def play_singleplayer():
+    """Play singleplayer and try to beat the high score."""
+    player = get_single_player()
+    score = 0
+    history = []
+
+    high_score = load_high_score()
+
+    print()
+    print(f"Singleplayer mode lasts {SOLO_TURNS} turns.")
+
+    if high_score is None:
+        print("No high score has been saved yet. Try to set one!")
+    else:
+        high_player, high_points = high_score
+        print(f"The high score is {high_points} by {high_player}.")
+        print("Try to beat it!")
+
+    for turn in range(1, SOLO_TURNS + 1):
+        print()
+        print(f"Turn {turn} of {SOLO_TURNS}")
+
+        points = play_turn(player)
+        score += points
+
+        history.append(
+            {
+                "turn": turn,
+                "player": player,
+                "score": score,
+            }
+        )
+
+        print(f"Your total score is now {score}.")
+
+    save_game({player: score}, player)
+    score_graph(history)
+
+    print()
+    print("=" * 40)
+    print("Singleplayer game over!")
+    print("=" * 40)
+    print(f"Final score: {score}")
+
+    if high_score is None or score > high_score[1]:
+        save_high_score(player, score)
+        print("New high score!")
+    else:
+        print(f"You did not beat the high score of {high_score[1]}.")
+
+    print("Game results were saved to game_records.csv.")
+    print("A score graph can be viewed in score_graph.png.")
+
+
+def main():
+    """Start the game and send the user to the selected mode."""
+    print("Welcome to Tuple Out!")
+    print("Let's begin!")
+
+    mode = choose_mode()
+    if mode == "1":
+        play_singleplayer()
+    else:
+        play_multiplayer()
+
 
 
 if __name__ == "__main__":
     main()
-    
-    
     
     
     

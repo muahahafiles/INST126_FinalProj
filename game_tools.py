@@ -5,7 +5,7 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd 
+import pandas as pd
 import seaborn as sns
 
 
@@ -18,7 +18,7 @@ GRAPH_FILE = "score_graph.png"
 HIGH_SCORE_FILE = "high_score.csv"
 SOLO_TURNS = 5
 
-#Game tools functions / methods 
+# Game tools functions
 
 def roll_dice(dice_count=DICE_COUNT, die_sides=DIE_SIDES):
     """Roll the dice and return the results as a list."""
@@ -85,9 +85,8 @@ def save_game(scores, winner, record_file=RECORD_FILE):
             writer.writerow([player, score, winner_status])
 
 
-
 def load_high_score(high_score_file=HIGH_SCORE_FILE):
-    """Load the singleplayer score if one has been saved."""
+    """Load the singleplayer high score if one has been saved."""
     if not os.path.exists(high_score_file):
         return None
 
@@ -109,7 +108,6 @@ def save_high_score(player, score, high_score_file=HIGH_SCORE_FILE):
         writer.writerow([player, score])
         
         
-
 def score_graph(score_history, graph_file=GRAPH_FILE):
     """Create a graph showing how the game score changed."""
     score_data = pd.DataFrame(score_history)
