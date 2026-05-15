@@ -4,3 +4,4 @@ __pycache__/
 game_records.csv
 score_graph.png
 .venv/
+high_score.csv

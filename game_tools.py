@@ -9,12 +9,14 @@ import pandas as pd
 import seaborn as sns
 
 
-# Game settings 
+# Game settings (constants)
 DICE_COUNT = 3
 DIE_SIDES = 6
 DEFAULT_WINNING_SCORE = 50
 RECORD_FILE = "game_records.csv"
 GRAPH_FILE = "score_graph.png"
+HIGH_SCORE_FILE = "high_score.csv"
+SOLO_TURNS = 5
 
 #Game tools functions / methods 
 
@@ -82,6 +84,31 @@ def save_game(scores, winner, record_file=RECORD_FILE):
 
             writer.writerow([player, score, winner_status])
 
+
+
+def load_high_score(high_score_file=HIGH_SCORE_FILE):
+    """Load the singleplayer score if one has been saved."""
+    if not os.path.exists(high_score_file):
+        return None
+
+    with open(high_score_file, "r", newline="", encoding="utf-8") as file:
+        reader = csv.reader(file)
+
+        for row in reader:
+            player = row[0]
+            score = int(row[1])
+            return player, score
+
+    return None
+
+
+def save_high_score(player, score, high_score_file=HIGH_SCORE_FILE):
+    """Save the best singleplayer score."""
+    with open(high_score_file, "w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        writer.writerow([player, score])
+        
+        
 
 def score_graph(score_history, graph_file=GRAPH_FILE):
     """Create a graph showing how the game score changed."""

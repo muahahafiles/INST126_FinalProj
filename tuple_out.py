@@ -6,9 +6,28 @@ from game_tools import score_graph
 from game_tools import find_winner
 from game_tools import get_fixed_indexes
 from game_tools import is_tuple_out
+from game_tools import load_high_score
 from game_tools import reroll_unfixed_dice
 from game_tools import roll_dice
 from game_tools import save_game
+from game_tools import save_high_score
+
+
+def choose_mode():
+    """Let the user pick singleplayer or multiplayer."""
+    print()
+    print("Choose a game mode:")
+    print("1 - Singleplayer")
+    print("2 - Multiplayer")
+
+    mode = input("Enter 1 or 2: ").strip()
+
+    while mode != "1" and mode != "2":
+        print("Please enter 1 for Singleplayer or 2 for Multiplayer.")
+        mode = input("Enter 1 or 2: ").strip()
+
+    return mode
+
 
 
 def get_player_names():
@@ -25,6 +44,18 @@ def get_player_names():
         player_two = input ("Enter Player 2's name: ").strip()
         
     return [player_one, player_two]
+
+
+def get_single_player():
+    """Get the singleplayer ready for the game."""
+    player = input("Enter your name: ").strip()
+
+    while player == "":
+        print("We need your name!")
+        player = input("Enter your name: ").strip()
+
+    return player
+
 
 
 def show_scores(scores):
@@ -72,11 +103,10 @@ def play_turn(player_name):
             print("Please enter S to stop or R to reroll.")
 
 
-def main():
+def play_multiplayer():
     """Start the game and control the main game loop."""
-    print("Welcome to Tuple Out!")
     print(f"The first player to reach {DEFAULT_WINNING_SCORE} points wins.")
-    print("Let's begin!")
+  
 
     players = get_player_names()
     scores = {}
