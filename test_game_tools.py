@@ -1,4 +1,4 @@
-"""Test for the game's helper functions."""
+"""Tests for the game's helper functions."""
 
 from game_tools import calculate_score
 from game_tools import find_winner

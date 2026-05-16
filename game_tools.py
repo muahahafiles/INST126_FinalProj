@@ -20,6 +20,7 @@ SOLO_TURNS = 5
 
 # Game tools functions
 
+
 def roll_dice(dice_count=DICE_COUNT, die_sides=DIE_SIDES):
     """Roll the dice and return the results as a list."""
     rolls = np.random.randint(1, die_sides + 1, size=dice_count)
@@ -111,7 +112,6 @@ def save_high_score(player, score, high_score_file=HIGH_SCORE_FILE):
 def score_graph(score_history, graph_file=GRAPH_FILE):
     """Create a graph showing how the game score changed."""
     score_data = pd.DataFrame(score_history)
-    
     
     sns.lineplot(data=score_data, x="turn", y="score", hue="player")
     plt.title("Tuple Out Score Progress")

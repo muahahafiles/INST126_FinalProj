@@ -1,4 +1,4 @@
-"""File used for running the game."""
+"""Run the Tuple Out dice game."""
 
 from game_tools import DEFAULT_WINNING_SCORE
 from game_tools import calculate_score
@@ -32,8 +32,8 @@ def choose_mode():
 
 def get_player_names():
     """Get both multiplayer names."""
-    player_one = input("Player 1: Enter your name: ").strip()
-    player_two = input("Player 2: Enter your name: ").strip()
+    player_one = input("Enter Player 1's name: ").strip()
+    player_two = input("Enter Player 2's name: ").strip()
     
     while player_one == "":
         print("We need your name, Player 1!")
@@ -201,25 +201,37 @@ def play_singleplayer():
     print("A score graph can be viewed in score_graph.png.")
 
 
+def play_again():
+    """Ask the user if they want to play another game."""
+    choice = input("\nWould you like to play again? Enter Y or N: ").strip().lower()
+
+    while choice != "y" and choice != "n":
+        print("Please enter Y to play again or N to quit.")
+        choice = input("Would you like to play again? Enter Y or N: ").strip().lower()
+
+    return choice == "y"
+
+
 def main():
     """Start the game and send the user to the selected mode."""
     print("Welcome to Tuple Out!")
     print("Let's begin!")
 
-    mode = choose_mode()
-    if mode == "1":
-        play_singleplayer()
-    else:
-        play_multiplayer()
+    keep_playing = True
 
+    while keep_playing:
+        mode = choose_mode()
+
+        if mode == "1":
+            play_singleplayer()
+        else:
+            play_multiplayer()
+
+        keep_playing = play_again()
+
+    print()
+    print("Thanks for playing Tuple Out!")
 
 
 if __name__ == "__main__":
-    main()
-    
-    
-    
-    
-    
-    
-    
+    main()      
